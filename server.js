@@ -16,6 +16,17 @@ app.get('/contato', (req, res) => {
     res.sendFile(path.join(__dirname, 'views', 'contato.html'));
 });
 
+app.post('/contato', (req, res) => {
+    const { nome, email, assunto, mensagem } = req.body;
+
+    if (!nome || !email || !assunto || !mensagem) {
+        return res.redirect('/not-found');
+    }
+
+    const queryString = `?nome=${encodeURIComponent(nome)}&email=${encodeURIComponent(email)}&assunto=${encodeURIComponent(assunto)}&mensagem=${encodeURIComponent(mensagem)}`;
+
+    res.redirect(`/contato-recebido${queryString}`);
+});
 
 app.get('/contato-recebido', (req, res) => {
     const { nome, email, assunto, mensagem } = req.query;
